@@ -1,4 +1,4 @@
-import {INgxStorageOptions} from "./iNgxStorageOptions";
+import { INgxStorageOptions } from "./iNgxStorageOptions";
 /**
  * INgxStorageResponse
  */
