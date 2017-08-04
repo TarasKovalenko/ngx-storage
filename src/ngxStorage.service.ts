@@ -26,7 +26,14 @@ export class NgxStorageService {
         this.validateNgxStorage();
     }
 
-    public set(key: string, value: any, options?: INgxStorageOptions) {
+    /**
+     * Set new item into torage by key
+     * @param key - stoarge key
+     * @param value - storage value
+     * @param options - (optional - by default will be like default storage) item settings (lifeTime: in the seconds, maxLifeTime: in the seconds)
+     * @return Boolean true - success, false - something happened (see into browser developer console)
+     */
+    public set(key: string, value: any, options?: INgxStorageOptions): boolean {
         let storageKey = this.toStorageKey(key);
         options = options ? options : this.defaultNgxOptions;
 
@@ -96,7 +103,7 @@ export class NgxStorageService {
             this.ngxStorage = this.init();
         }
         if (!this.ngxStorage.isEnabled()) {
-            throw new Error('Oops');
+            throw new Error('Please enable cookies and local-storage in your browser.');
         }
     }
 
