@@ -17,6 +17,9 @@ export class NgxStorageService {
 
     private ngxPrefix: string = NGX_PREFIX;
 
+    /**
+     * Instance with default option settings
+     */
     private defaultNgxOptions: INgxStorageOptions = {
         lifeTime: Number.MAX_VALUE,
         maxLifeTime: Number.MAX_VALUE
@@ -27,7 +30,7 @@ export class NgxStorageService {
     }
 
     /**
-     * Set new item into torage by key
+     * Set new item into storage by key
      * @param key - stoarge key
      * @param value - storage value
      * @param options - (optional - by default will be like default storage) item settings (lifeTime: in the seconds, maxLifeTime: in the seconds)
@@ -40,6 +43,11 @@ export class NgxStorageService {
         return this.ngxStorage.setItem(storageKey, this.getStorageValue(value, options));
     }
 
+    /**
+     * Get item from storage by key
+     * @param key - storage key
+     * @return any or null if item by the current key not found
+     */
     public get(key: string): any {
         let storageValue = this.ngxStorage.getItem(this.toStorageKey(key));
         let value: any = null;
@@ -54,12 +62,21 @@ export class NgxStorageService {
         return value;
     }
 
-    public destroy(key: string) {
+    /**
+     * Delete item from storage by key
+     * @param key - storage key
+     * @return void
+     */
+    public destroy(key: string): void {
         this.ngxStorage.deleteItem(this.toStorageKey(key));
         this.destroyFromTag(this.toStorageKey(key));
     }
 
-    public destroyAll() {
+    /**
+     * Clear all storage
+     * @return void
+     */
+    public destroyAll(): void {
         this.ngxStorage.destroyAll();
     }
 
