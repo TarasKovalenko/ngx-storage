@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { NgxStorageBase } from "../common/ngxStorage.base";
-import { INgxStorageResponse } from "../interfaces/iNgxStorageResponse";
+import { NgxStorageBase } from "../common/ngx-storage.base";
+import { NgxStorageResponse } from "../interfaces/ngx-storage-response";
 
 @Injectable()
 export class NgxLocalStorageService extends NgxStorageBase {
@@ -11,7 +11,7 @@ export class NgxLocalStorageService extends NgxStorageBase {
      * @param key - storage key
      * @return INgxStorageResponse or null if not found
      */
-    public getItem(key: string): INgxStorageResponse {
+    public getItem<T>(key: string): NgxStorageResponse<T> {
         let value = localStorage.getItem(key);
         return value ? JSON.parse(value) : null;
     }
@@ -22,7 +22,7 @@ export class NgxLocalStorageService extends NgxStorageBase {
      * @param value - storage value
      * @return Boolean true - success, false - something happened (see into browser developer console)
      */
-    public setItem(key: string, value: INgxStorageResponse): boolean {
+    public setItem<T>(key: string, value: NgxStorageResponse<T>): boolean {
         try {
             localStorage.setItem(key, JSON.stringify(value));
             return true;

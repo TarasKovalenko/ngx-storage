@@ -1,10 +1,9 @@
+import { Injectable, Optional } from '@angular/core';
 
-import { Injectable, Optional } from "@angular/core";
+import { NgxStorageOptions } from "./interfaces/ngx-storage-options";
+import { NgxStorageResponse } from "./interfaces/ngx-storage-response";
 
-import { INgxStorageOptions } from "./interfaces/iNgxStorageOptions";
-import { INgxStorageResponse } from "./interfaces/iNgxStorageResponse";
-
-import { NgxStorageBase } from "./common/ngxStorage.base";
+import { NgxStorageBase } from "./common/ngx-storage.base";
 
 import { NgxLocalStorageService } from "./services/ngxLocalStorage.service";
 import { NgxSessionStorageService } from "./services/ngxSessionStorage.service";
@@ -20,7 +19,7 @@ export class NgxStorageService {
     /**
      * Instance with default option settings
      */
-    private defaultNgxOptions: INgxStorageOptions = {
+    private defaultNgxOptions: NgxStorageOptions = {
         lifeTime: Number.MAX_VALUE,
         maxLifeTime: Number.MAX_VALUE
     };
@@ -36,7 +35,7 @@ export class NgxStorageService {
      * @param options - (optional - by default will be like default storage) item settings (lifeTime: in the seconds, maxLifeTime: in the seconds)
      * @return Boolean true - success, false - something happened (see into browser developer console)
      */
-    public set(key: string, value: any, options?: INgxStorageOptions): boolean {
+    public set(key: string, value: any, options?: NgxStorageOptions): boolean {
         let storageKey = this.toStorageKey(key);
         options = options ? options : this.defaultNgxOptions;
 
@@ -152,22 +151,22 @@ export class NgxStorageService {
         return key.replace(this.getNgxPrefix(), '');
     }
 
-    private getStorageValue(value: any, options: INgxStorageOptions): INgxStorageResponse {
+    private getStorageValue<T>(value: any, options: NgxStorageOptions): NgxStorageResponse<T> {
         return {
             value: value,
             options: this.convertToNgxOptions(options)
         };
     }
 
-    private convertToNgxOptions(options: INgxStorageOptions): INgxStorageOptions {
-        let storageOptions: INgxStorageOptions = {};
+    private convertToNgxOptions(options: NgxStorageOptions): NgxStorageOptions {
+        let storageOptions: NgxStorageOptions = {};
         storageOptions.lifeTime = options.lifeTime ? options.lifeTime :
             (options.maxLifeTime ? (Date.now() + (options.maxLifeTime * 1000)) : this.defaultNgxOptions.lifeTime);
         storageOptions.maxLifeTime = options.maxLifeTime ? options.maxLifeTime : this.defaultNgxOptions.maxLifeTime;
         return storageOptions;
     }
 
-    private validateStorageValue(value: INgxStorageResponse): boolean {
+    private validateStorageValue<T>(value: NgxStorageResponse<T>): boolean {
         return !!value.options.lifeTime && value.options.lifeTime > Date.now();
     }
 
